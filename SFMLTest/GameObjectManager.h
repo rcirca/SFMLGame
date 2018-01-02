@@ -13,8 +13,11 @@ public:
 	int getObjectCount() const;
 	VisibleGameObject* getGameObject(std::string name) const;
 	void drawAll(sf::RenderWindow &window);
+	void updateAll();
 
 private:
+	sf::Clock _clock;
+	
 	std::map<std::string, VisibleGameObject*> _gameObjects;
 	struct GemeObjectDeallocator
 	{

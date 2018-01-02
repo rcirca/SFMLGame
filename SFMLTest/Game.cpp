@@ -1,16 +1,24 @@
 #include "Game.h"
 #include "MainMenu.h"
 #include "SplashScreen.h"
+#include "GameBall.h"
 
 void Game::Start()
 {
 	if (_gameState != Game::Uninitialized)
 		return;
 
-	_mainWindow.create(sf::VideoMode(1024, 768, 32), "Pang!");
+	_mainWindow.create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32), "Pang!");
+	PlayerPaddle *player1 = new PlayerPaddle();
+	player1->setPosition((SCREEN_WIDTH / 2), 700);
+
+	GameBall *ball = new GameBall();
+	ball->setPosition((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2) - 15);
+
+	_gameObjectManager.add("Paddle1", player1);
+	_gameObjectManager.add("Ball", ball);
+
 	_gameState = Game::ShowingSplash;
-	_paddle1.load("images/paddle.png");
-	_paddle1.setPosition((1024 / 2) - 45, 700);
 
 	while (!IsExiting())
 	{
@@ -30,24 +38,26 @@ bool Game::IsExiting()
 
 void Game::GameLoop()
 {
+	sf::Event currentEvent;
+	_mainWindow.pollEvent(currentEvent);
+
 	switch (_gameState)
 	{
 		case Game::Playing:
 		{
-			sf::Event currentEvent;
-			while (_mainWindow.pollEvent(currentEvent))
-			{
-				_mainWindow.clear(sf::Color(0, 0, 0));
-				_paddle1.draw(_mainWindow);
-				_mainWindow.display();
+			_mainWindow.clear(sf::Color(0, 0, 0));
 
-				if (currentEvent.type == sf::Event::Closed)
-					_gameState = Game::Exiting;
+			_gameObjectManager.updateAll();
+			_gameObjectManager.drawAll(_mainWindow);
 
-				if (currentEvent.type == sf::Event::KeyPressed)
-					if (currentEvent.key.code == sf::Keyboard::Escape)
-						ShowMenu();
-			}
+			_mainWindow.display();
+
+			if (currentEvent.type == sf::Event::Closed)
+				_gameState = Game::Exiting;
+
+			if (currentEvent.type == sf::Event::KeyPressed)
+				if (currentEvent.key.code == sf::Keyboard::Escape)
+					ShowMenu();
 			break;
 		}
 		case Game::ShowingSplash:
@@ -60,6 +70,8 @@ void Game::GameLoop()
 			ShowMenu();
 			break;
 		}
+		default:
+			break;
 	}
 }
 
@@ -85,7 +97,26 @@ void Game::ShowSplahsScreen()
 	_gameState = Game::ShowingMenu;
 }
 
+sf::RenderWindow& Game::getWindow()
+{
+	return _mainWindow;
+}
+
+GameObjectManager& Game::getGameObjectManager()
+{
+	return _gameObjectManager;
+}
+
+
+const sf::Event& Game::getEvent()
+{
+	sf::Event currentEvent;
+	_mainWindow.pollEvent(currentEvent);
+	return currentEvent;
+}
+
+
+
 Game::GameState Game::_gameState = Game::Uninitialized;
 sf::RenderWindow Game::_mainWindow;
-PlayerPaddle Game::_paddle1;
-GameObjectManager _gameObjectManager;
+GameObjectManager Game::_gameObjectManager;

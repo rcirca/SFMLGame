@@ -7,6 +7,11 @@ class Game
 {
 public:
 	static void Start();
+	static sf::RenderWindow& getWindow();
+	const static sf::Event& getEvent();
+	const static int SCREEN_WIDTH = 1024;
+	const static int SCREEN_HEIGHT = 768;
+	static GameObjectManager& getGameObjectManager();
 
 private:
 	static bool IsExiting();
@@ -18,6 +23,5 @@ private:
 
 	static GameState _gameState;
 	static sf::RenderWindow _mainWindow;
-	static PlayerPaddle _paddle1;
 	static GameObjectManager _gameObjectManager;
 };
