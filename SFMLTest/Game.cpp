@@ -38,8 +38,8 @@ bool Game::IsExiting()
 
 void Game::GameLoop()
 {
-	sf::Event currentEvent;
-	_mainWindow.pollEvent(currentEvent);
+	sf::Event _currentEvent;
+	_mainWindow.pollEvent(_currentEvent);
 
 	switch (_gameState)
 	{
@@ -52,11 +52,12 @@ void Game::GameLoop()
 
 			_mainWindow.display();
 
-			if (currentEvent.type == sf::Event::Closed)
+			if (_currentEvent.type == sf::Event::Closed)
 				_gameState = Game::Exiting;
-
-			if (currentEvent.type == sf::Event::KeyPressed)
-				if (currentEvent.key.code == sf::Keyboard::Escape)
+			if (_currentEvent.type == sf::Event::LostFocus)
+				ShowMenu();
+			if (_currentEvent.type == sf::Event::KeyPressed)
+				if (_currentEvent.key.code == sf::Keyboard::Escape)
 					ShowMenu();
 			break;
 		}
@@ -111,9 +112,16 @@ GameObjectManager& Game::getGameObjectManager()
 const sf::Event& Game::getEvent()
 {
 	sf::Event currentEvent;
-	_mainWindow.pollEvent(currentEvent);
-	return currentEvent;
+	if(_mainWindow.pollEvent(currentEvent))
+		return currentEvent;
+	return {};
 }
+
+//sf::Event& Game::getCurrentEvent()
+//{
+//	return {};
+//}
+
 
 
 

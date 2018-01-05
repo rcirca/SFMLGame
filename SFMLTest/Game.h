@@ -12,6 +12,7 @@ public:
 	const static int SCREEN_WIDTH = 1024;
 	const static int SCREEN_HEIGHT = 768;
 	static GameObjectManager& getGameObjectManager();
+	static sf::Event& getCurrentEvent();
 
 private:
 	static bool IsExiting();
@@ -20,6 +21,9 @@ private:
 	static void ShowMenu();
 
 	enum GameState{ Uninitialized, ShowingSplash, Paused, ShowingMenu, Playing, Exiting};
+
+
+	//static sf::Event& _currentEvent;
 
 	static GameState _gameState;
 	static sf::RenderWindow _mainWindow;
