@@ -4,6 +4,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <iostream>
+#include <chrono>
 
 GameBall::GameBall() :
 _velocity((300.0f)),
@@ -67,8 +68,11 @@ void GameBall::update(float elapsedTime)
 
 		//check if ball is inside
 		//todo make a funciton for that specifically to make it more readable
-		if (getBoundingRectangle().width > player1->getBoundingRectangle().top)
+		if (getBoundingRectangle().top + getBoundingRectangle().height > player1->getBoundingRectangle().top)
+		{
+			std::cout << "Ball inside paddle" << std::endl;
 			setPosition(getPosition().x, player1->getBoundingRectangle().top - getWidth() / 2 - 1);
+		}
 
 		auto playerVelocity = player1->getVelocity();
 
@@ -102,6 +106,7 @@ void GameBall::update(float elapsedTime)
 		//temp move to middle of screen and randomize angle
 		getSprite().setPosition(Game::SCREEN_WIDTH / 2, Game::SCREEN_HEIGHT / 2);
 		std::default_random_engine generator;
+		generator.seed(std::chrono::system_clock::now().time_since_epoch().count());
 		std::uniform_int_distribution<int> distribution(0, 360);
 		_angle = distribution(generator);
 		_velocity = 300.0f;
