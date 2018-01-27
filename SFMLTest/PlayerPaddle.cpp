@@ -22,11 +22,11 @@ void PlayerPaddle::update(float elapsedTime)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)
 		|| sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
-		_velocity -= 0.3f;
+		_velocity -= 3.0f;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)
 		|| sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
-		_velocity += 0.3f;
+		_velocity += 3.0f;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)
 		|| sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))

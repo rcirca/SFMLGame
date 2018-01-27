@@ -5,6 +5,7 @@
 
 void Game::Start()
 {
+	restartClock();
 	if (_gameState != Game::Uninitialized)
 		return;
 
@@ -49,7 +50,6 @@ void Game::GameLoop()
 
 			_gameObjectManager.updateAll();
 			_gameObjectManager.drawAll(_mainWindow);
-
 			_mainWindow.display();
 
 			if (_currentEvent.type == sf::Event::Closed)
@@ -74,6 +74,7 @@ void Game::GameLoop()
 		default:
 			break;
 	}
+	restartClock();
 }
 
 void Game::ShowMenu()
@@ -117,6 +118,16 @@ const sf::Event& Game::getEvent()
 	return {};
 }
 
+sf::Time Game::getElapsedTime() 
+{
+	return _elapsedTime;
+}
+
+void Game::restartClock()
+{
+	_elapsedTime = _clock.restart();
+}
+
 //sf::Event& Game::getCurrentEvent()
 //{
 //	return {};
@@ -128,3 +139,5 @@ const sf::Event& Game::getEvent()
 Game::GameState Game::_gameState = Game::Uninitialized;
 sf::RenderWindow Game::_mainWindow;
 GameObjectManager Game::_gameObjectManager;
+sf::Clock Game::_clock;
+sf::Time Game::_elapsedTime;

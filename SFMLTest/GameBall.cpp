@@ -109,7 +109,7 @@ void GameBall::update(float elapsedTime)
 		generator.seed(std::chrono::system_clock::now().time_since_epoch().count());
 		std::uniform_int_distribution<int> distribution(0, 360);
 		_angle = distribution(generator);
-		_velocity = 300.0f;
+		_velocity = 400.0f;
 		_elapsedTimeSinceStart = 0.0f;
 	}
 

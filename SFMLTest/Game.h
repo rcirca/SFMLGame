@@ -13,6 +13,8 @@ public:
 	const static int SCREEN_HEIGHT = 768;
 	static GameObjectManager& getGameObjectManager();
 	static sf::Event& getCurrentEvent();
+	static void restartClock();
+	static sf::Time getElapsedTime();
 
 private:
 	static bool IsExiting();
@@ -28,4 +30,7 @@ private:
 	static GameState _gameState;
 	static sf::RenderWindow _mainWindow;
 	static GameObjectManager _gameObjectManager;
+	static sf::Clock _clock;
+	static sf::Time _elapsedTime;
+
 };
